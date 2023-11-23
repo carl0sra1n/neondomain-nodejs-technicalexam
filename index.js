@@ -29,6 +29,11 @@ const tableOneSchema = Joi.object().keys({
 	posted_by: Joi.string().label("UUID").required()
 });
 
+const tableOneSchemaNotRequired = Joi.object().keys({
+	idea_summary: Joi.string().label("Idea summary"),
+	posted_by: Joi.string().label("UUID")
+});
+
 // GET
 app.get('/table_1', (req, res) => {
 	try {
@@ -87,6 +92,12 @@ app.post('/table_1', (req, res) => {
 // PUT
 app.put('/table_1/:id', (req, res) => {
 	try {
+		const params = tableOneSchemaNotRequired.validate(req.body);
+
+		if (params.hasOwnProperty("error")) {
+			return res.status(500).send('Validation Error');
+		};
+
 		const {
 			idea_summary,
 			posted_by
@@ -138,6 +149,11 @@ app.delete('/table_1/:id', (req, res) => {
 const tableTwoSchema = Joi.object().keys({
 	user_first_name: Joi.string().label("User first name").required(),
 	user_last_name: Joi.string().label("User last name").required()
+});
+
+const tableTwoSchemaNotRequired = Joi.object().keys({
+	user_first_name: Joi.string().label("User first name"),
+	user_last_name: Joi.string().label("User last name")
 });
 
 // GET
@@ -196,6 +212,12 @@ app.post('/table_2', (req, res) => {
 // PUT
 app.put('/table_2/:id', (req, res) => {
 	try {
+		const params = tableTwoSchemaNotRequired.validate(req.body);
+
+		if (params.hasOwnProperty("error")) {
+			return res.status(500).send('Validation Error');
+		};
+
 		const {
 			user_first_name,
 			user_last_name
